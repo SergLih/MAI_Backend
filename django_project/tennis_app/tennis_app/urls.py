@@ -17,11 +17,11 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
 from tennis_application import views
+from django.conf.urls import include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    #url(r'^$', views.index, name='index'),
-    url(r'^(?P<surface_slug>[\w\-]+)/$', views.show_surface, name='show_surface'),
-    url(r'^(?P<surface_slug>[\w\-]+)/(?P<player_name_slug>[\w\-]+)/$', views.show_surface_player, name='show_surface_player'),
-    url(r'^$', views.my_view, name='my_view'),
+    url(r'^$', views.hello, name='hello'),
+    url(r'^api/admin/', admin.site.urls),
+    url(r'^api/tennis/', include('tennis_application.urls')),
 ]
+
