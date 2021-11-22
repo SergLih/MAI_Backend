@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
-import os
+import platform, os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,12 +22,21 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'tbys6+s5tge$pzs#njt9l_ebfy#$b*h$+u!cfw*d242)lqb(_^'
+#SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = int(os.environ.get("DEBUG", default=0))
+DEBUG = 1
 
-ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1']
+
+# dbHost = ""
+# if platform.system() == "Linux": # Linux means running inside Ubuntu in docker in my case.
+#     dbHost = '5432'
+# else :
+#     dbHost = "localhost"
 
 # Application definition
 
@@ -77,12 +86,19 @@ WSGI_APPLICATION = 'tennis_app.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'tennisapp_db',
-        'USER': 'sergey',
-        'PASSWORD': 'sergiopostgres',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME': 'tennisapp_db',
+        # 'USER': 'sergey',
+        # 'PASSWORD': 'sergiopostgres',
+        # 'HOST': '0.0.0.0',
+        # 'PORT': '5432',
+
+        'ENGINE': os.getenv('POSTGRES_ENGINE'),
+        'NAME': os.getenv('POSTGRES_DB'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('POSTGRES_HOST'),
+        'PORT': os.getenv('POSTGRES_PORT'),
     }
 }
 
