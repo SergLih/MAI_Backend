@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('family', models.CharField(max_length=30)),
                 ('birthday', models.DateTimeField()),
                 ('count_wons', models.PositiveIntegerField()),
-                ('sex', models.BinaryField()),
+                ('sex', models.IntegerField()),
             ],
         ),
         migrations.CreateModel(

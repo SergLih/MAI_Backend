@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path
 from django.conf.urls import url
 from tennis_application import views
@@ -23,4 +24,4 @@ urlpatterns = [
     url(r'^$', views.hello, name='hello'),
     url(r'^api/admin/', admin.site.urls),
     url(r'^api/tennis/', include('tennis_application.urls')),
-]
+] + staticfiles_urlpatterns()

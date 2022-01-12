@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
+from django.core import serializers
+from tennis_application.models import Player, Sponsor, Tournament
 
 from django.views.decorators.http import require_GET
 from django.views.decorators.http import require_POST
@@ -12,6 +14,20 @@ def create_user(request):
 @require_GET
 def read_user(request, user_id):
     return JsonResponse({"id": user_id})
+
+@require_GET
+def show_player(request, id):
+    try:
+        player = Player.objects.get(player_id=id)
+    except Player.DoesNotExist:
+        raise Http404("Игрок не найден")
+    return HttpResponse(player, content_type='text/plain')
+
+@require_GET
+def get_all_players(request):
+    qplayers = Player.objects.all()
+    qplayers_json = serializers.serialize('json', qplayers)
+    return HttpResponse(qplayers_json, content_type='application/json')
 
 @require_GET
 def hello(request):
