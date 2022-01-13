@@ -2,6 +2,9 @@
 import os
 from django.db import migrations, models
 
+#def move_m1(apps, schema_editor):
+#    LogEntry = apps.get('admin.logentry')
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -24,6 +27,7 @@ class Migration(migrations.Migration):
         superuser.save()
 
     operations = [
+        #migrations.RunPython(move_m1),
         migrations.RunPython(generate_superuser),
         migrations.AlterField(
             model_name='player',

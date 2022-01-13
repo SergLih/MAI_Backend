@@ -32,6 +32,8 @@ services:
     #   - 8000:8000
     volumes:
       - ./tennis_app/:/home/sergey/MAI/maga/backend/works/django_project
+      - $HOME/.aws/credentials:/home/sergey/.aws/credentials:ro
+      - $HOME/.aws/config:/home/sergey/.aws/config:ro
       #- TZ=Europe/Moscow
     depends_on:
       - db
@@ -50,6 +52,7 @@ services:
       - "80:80"
     depends_on:
       - app
+
 
 networks:
     djangonetwork:

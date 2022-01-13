@@ -8,7 +8,7 @@ ENV PYTHONUNBUFFERED 1
 
 # install psycopg2 dependencies
 RUN apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev curl
+    && apk add postgresql-dev gcc python3-dev musl-dev curl libc-dev libffi-dev
 
 RUN pip install --upgrade pip
 COPY ./tennis_app/requirements.txt .

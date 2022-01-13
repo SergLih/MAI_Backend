@@ -25,14 +25,16 @@ class Player(models.Model):
 		return f'{self.family} {self.name}'
 
 	def save(self, *args, **kwargs):
-		o1 = Player.objects.filter(name=self.name, family=self.family)
-		if o1.exists():
-			raise ValidationError('Player already in')
-		else:
-			super().save(*args, **kwargs)
+		results = Player.objects.filter(name=self.name, family=self.family)
+		for o1 in results:
+			if o1.player_id != self.player_id:
+				raise ValidationError('Игрок с таким именем уже есть')
+
+		super().save(*args, **kwargs)
 
 class Sponsor(models.Model):
 	sponsor_id = models.AutoField(primary_key=True, verbose_name = "Id")
+	logo = models.FileField(max_length=100, null=True)
 	name = models.CharField(max_length=30, verbose_name = "Название организации")
 	address = models.CharField(max_length=50, verbose_name = "Адрес")
 	players = models.ManyToManyField(Player)
@@ -51,3 +53,11 @@ class Tournament(models.Model):
 
 	def __str__(self):
 		return self.name
+
+	def _validate_start_end_dates(self):
+		if self.end_tur < self.begin_tur:
+			raise ValidationError("Дата окончания не может быть раньше даты начала")
+    
+	def save(self, *args, **kwargs):
+		self._validate_start_end_dates()
+		return super().save(*args, **kwargs)
